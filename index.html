@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Web Logistik YWM</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="icon" href="assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cover: #273F4F;
+    --cover-light: #33495F;
+    --page: #F9FAFB;
+    --rule: #D1D5DB;
+    --ink: #273F4F;
+    --ink-soft: #6B7280;
+    --gold: #FE7743;
+    --green: #2E7D32;
+    --red: #C53030;
+    --blue: #2563EB;
+    --orange: #DD5C29;
+    --purple: #7C3AED;
+  }
+  html, body { height: 100%; overscroll-behavior: none; }
+  body { font-family: 'Inter', system-ui, sans-serif; margin: 0; color: var(--ink); }
+  .serif { font-family: 'Source Serif Pro', Georgia, serif; }
+  .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+  .page-bg {
+    background: var(--page);
+  }
+  .nav-btn-desktop { color: #C7D2DC; }
+  .nav-btn-desktop.active { background: var(--page); color: var(--ink); position: relative; }
+  .nav-btn-desktop.active::after {
+    content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 4px; background: var(--gold);
+  }
+  .nav-btn-mobile { color: #93A5B5; }
+  .nav-btn-mobile.active { color: var(--gold); }
+  .stamp { font-family: 'IBM Plex Mono', monospace; display: inline-block; }
+  .stamp-masuk { background: var(--green); color: #ffffff; border: 1px solid var(--green); }
+  .stamp-keluar { background: var(--red); color: #ffffff; border: 1px solid var(--red); }
+  .rule-b { border-bottom: 1px solid var(--rule); }
+  .rule-all { border: 1px solid var(--rule); }
+  input, select { border-color: var(--rule); background: transparent; font-size: 16px; }
+  @media (min-width: 640px) {
+    input, select { font-size: 0.875rem; }
+  }
+  select {
+    appearance: none; -webkit-appearance: none; -moz-appearance: none;
+    text-align: left; text-align-last: left; -moz-text-align-last: left;
+    padding-right: 2rem !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23273F4F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 14px;
+  }
+  ::placeholder { color: #9CA3AF; }
+  .safe-bottom { padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); }
+
+  /* Responsive list layout for mobile */
+  .stock-row, .transaction-row {
+    transition: background-color .15s ease;
+  }
+  @media (max-width: 639px) {
+    .stock-row {
+      align-items: flex-start !important;
+      flex-wrap: wrap;
+      gap: 10px !important;
+      padding: 12px 0 !important;
+    }
+    .stock-row .stock-main {
+      width: 100%;
+      flex-basis: 100%;
+    }
+    .stock-row .stock-actions {
+      width: 100%;
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      align-items: center;
+      gap: 7px !important;
+    }
+    .stock-row .stock-value {
+      font-size: 1.05rem !important;
+    }
+    .transaction-row {
+      align-items: flex-start !important;
+      flex-direction: column;
+      gap: 8px !important;
+      padding: 12px 0 !important;
+    }
+    .transaction-row .tx-main {
+      width: 100%;
+    }
+    .transaction-row .tx-actions {
+      width: 100%;
+      display: flex !important;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 7px !important;
+    }
+    .transaction-row .tx-date {
+      margin-right: auto;
+    }
+    .mobile-action {
+      min-height: 34px;
+      padding: 7px 12px !important;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #item-list, #tx-list {
+      width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="h-full h-[100dvh] w-full flex flex-col md:flex-row overflow-hidden">
+
+  <!-- Sidebar (desktop only) -->
+  <nav class="hidden md:flex md:w-60 flex-col shrink-0 h-full" style="background:var(--cover)">
+    <div class="px-5 pt-6 pb-4 flex items-center gap-3" style="border-bottom:1px solid var(--cover-light)">
+      <img src="assets/icon.png" style="width: 40px; height: 40px;">
+      <div>
+        <p class="serif text-lg font-bold leading-tight text-white">Web Logistik</p>
+        <p class="text-xs mt-1" style="color:#AEC0CD; margin-top: 1px;">Yayasan Wreda Mulya</p>
+      </div>
+    </div>
+    <div id="nav-tabs-desktop" class="flex flex-col flex-1"></div>
+  </nav>
+
+  <!-- Top bar (mobile only) -->
+  <div class="md:hidden flex items-center px-4 py-3 shrink-0" style="background:var(--cover)">
+    <img src="assets/icon.png" style="width: 32px; height: 32px; margin-right: 10px;">
+    <p class="serif font-bold text-white text-base">Web Logistik YWM</p>
+  </div>
+
+  <main id="app-content" class="flex-1 p-4 sm:p-6 md:p-8 pb-28 md:pb-8 page-bg overflow-y-auto relative"></main>
+
+  <!-- Bottom tab bar (mobile only) -->
+  <nav id="nav-tabs-mobile" class="md:hidden fixed bottom-0 left-0 right-0 flex z-40 safe-bottom" style="background:var(--cover);box-shadow:0 -2px 10px rgba(0,0,0,0.25)"></nav>
+</div>
+
+<div id="modal-root"></div>
+<div id="toast" class="hidden fixed top-3 right-3 text-white text-xs px-3.5 py-2 rounded shadow-lg z-50" style="background:var(--ink)"></div>
+
+<script type="module" src="./app.js"></script>
+</body>
+</html>
